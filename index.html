@@ -1,0 +1,63 @@
+<?Based on https://github.com/svmatthews/d3-geo and 
+https://github.com/arundhaj/d3js_sandbox/tree/master/maps
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>India Topojson Basemap</title>
+  <script src="js/d3.v3.js" charset="utf-8"></script>
+  <script src="js/topojson.v1.js"></script>
+  <style>
+  body { margin:0; padding:0; }
+  #map {
+    display:block;
+    width:900px;
+    height:500px;
+  }
+  .county {
+    fill:#c0c0c0;
+    stroke:white;
+    stroke-width:0.5px;
+  }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <script>
+  var width = 960,
+    height = 1100;
+
+  var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  var color = d3.scale.category20();
+
+  d3.json("india_t.json", function(error, ind) {
+  if (error) return console.error(error);
+
+  var subunits = topojson.feature(ind, ind.objects.india);
+  var projection = d3.geo.mercator()
+     .scale(1500)
+     .center([80,20])
+     .translate([width / 2, height / 2]);
+
+  var path = d3.geo.path()
+     .projection(projection)
+     .pointRadius(2);
+
+  svg.selectAll(".subunit")
+     .data(subunits.features)
+     .enter().append("path")
+     .attr("class", function(d) { return "subunit " + d.id; })
+     .attr("class", "county") 
+     .attr("d", path);
+
+  });
+  </script>
+</body>
+</html>

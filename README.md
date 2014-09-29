@@ -1,2 +1,1 @@
-riceWGI
-=======
+####A simple browser based app for locate and read about rice diversity, associated biodiversity in the rice fields of the Western Ghats of India####
